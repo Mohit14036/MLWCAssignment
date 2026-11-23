@@ -1,0 +1,10 @@
+numpy>=1.24
+scipy>=1.10
+matplotlib>=3.7
+pyyaml>=6.0
+torch>=2.0
+# report generation (optional)
+markdown>=3.4
+xhtml2pdf>=0.2.11
+# only needed to read MATLAB v7.3 (HDF5) Vienna exports
+h5py>=3.8
