@@ -17,6 +17,7 @@
 \usepackage{xcolor}
 \usepackage{microtype}
 \usepackage[colorlinks=true,linkcolor=blue!50!black,citecolor=blue!50!black,urlcolor=blue!50!black]{hyperref}
+\urlstyle{same}   % links in the body font
 
 \captionsetup{font=small,labelfont=bf,skip=3pt}
 \captionsetup[sub]{font=small,skip=1pt}
@@ -35,7 +36,7 @@
 
 \title{\vspace{-1.2cm}\textbf{ChannelNet: Deep-Learning-Based OFDM Channel Estimation\\as Image Super-Resolution and Restoration}}
 \author{COM 837 -- Machine Learning for Wireless Communication -- Assignment 3\\
-Name: \studentname \qquad Roll No.: \rollno \qquad 23-11-2026\\
+Name: \studentname \qquad Roll No.: \rollno\\
 Code repository: \url{https://github.com/Mohit14036/MLWCAssignment}}
 \date{\vspace{-0.9cm}}
 
@@ -63,7 +64,7 @@ CP, 14 OFDM symbols per 1~ms sub-frame. Per resource element (eqs.~(1)--(2) of t
   \hat H_{\mathrm{LS}}[k_p,l_p] = \frac{Y[k_p,l_p]}{X[k_p,l_p]} .
 \end{equation}
 The per-sub-carrier model was verified against a full time-domain OFDM link (IFFT, CP, multipath
-convolution, FFT) in \texttt{tests/test\_sanity.py}.
+convolution, FFT).
 
 \paragraph{Channel models.} Both are WSSUS tapped-delay lines,
 $H[k,l] = \sum_{p} \sqrt{P_p}\, g_p(t_l)\, e^{-j2\pi f_k \tau_p}$, with independent unit-power Rayleigh
@@ -74,11 +75,11 @@ spread 0.37~$\mu$s, coherence bandwidth 540~kHz. \textbf{SUI5}: taps at 0/4/10~$
 the 10~$\mu$s excess delay also exceeds the 4.7~$\mu$s CP), i.e.\ far more frequency-selective.
 
 \paragraph{Simulator.} The paper used the Vienna LTE-A simulator. The course provided the
-\textbf{Vienna 5G Link-Level Simulator}; \texttt{matlab/generate\_vienna\_channels.m} uses its
-\texttt{Channel.FastFading} class (15.36~MHz sampling, built-in VehicularA, SUI5 as user-defined PDP,
-\texttt{GetTransferFunction} at every OFDM-symbol centre) to generate 40\,000 frames per model. The networks
+\textbf{Vienna 5G Link-Level Simulator}; {matlab/generate\_vienna\_channels.m} uses its
+{Channel.FastFading} class (15.36~MHz sampling, built-in VehicularA, SUI5 as user-defined PDP,
+{GetTransferFunction} at every OFDM-symbol centre) to generate 40\,000 frames per model. The networks
 were trained on Kaggle with the project's Python implementation of the \emph{same} models
-(\texttt{src/channel\_models.py}, sum-of-sinusoids Jakes fading), whose statistics match the Vienna
+({src/channel\_models.py}, sum-of-sinusoids Jakes fading), whose statistics match the Vienna
 channels (frequency correlation at 6 sub-carriers 0.972/0.973 for VehA, 0.650/0.653 for SUI5; time
 correlation across the sub-frame 0.92 for both). Section~\ref{sec:vienna} tests the trained networks on the
 Vienna channels directly.
@@ -184,7 +185,7 @@ convolutions use `same' padding (Table~\ref{tab:arch}; 8\,129 and 0.67\,M parame
     so there is no overfitting (64\,000 training images), and the IR stage clearly lowers the loss.
   \item \textbf{Reproducibility}: master seed 2026 from which every random stream (channels, noise, weight
     initialisation, batch order) is derived; cuDNN deterministic mode; settings in
-    \texttt{configs/final.yaml}; every checkpoint stores a \texttt{meta.json} (configuration, seed,
+    {configs/final.yaml}; every checkpoint stores a {meta.json} (configuration, seed,
     normalisation, environment). Regenerating the data locally reproduces the Kaggle data exactly.
 \end{itemize}
 
@@ -201,7 +202,7 @@ convolutions use `same' padding (Table~\ref{tab:arch}; 8\,129 and 0.67\,M parame
     \caption{SUI5, 48 pilots, 22~dB.}
   \end{subfigure}
   \caption{Training/validation loss of the SR and IR stages (all 14 models:
-    \texttt{results/figures/loss\_curves/}).}
+    {results/figures/loss\_curves/}).}
   \label{fig:loss}
 \end{figure}
 
@@ -310,7 +311,7 @@ frames from the Vienna 5G simulator (baselines with covariances from the Vienna 
 differs from the matched-data results by at most \textbf{0.18~dB (VehA) and 0.32~dB (SUI5)} at every SNR
 (e.g.\ deep high-SNR network at 22~dB: $1.94\cdot10^{-3}$ vs.\ $1.88\cdot10^{-3}$ on VehA,
 $3.39\cdot10^{-3}$ vs.\ $3.27\cdot10^{-3}$ on SUI5), and the ranking of all methods is unchanged
-(\texttt{results/figures/vienna\_*.png}). The networks depend on the channel statistics, not on the
+({results/figures/vienna\_*.png}). The networks depend on the channel statistics, not on the
 simulator, so all conclusions hold for Vienna channels as used in the paper.
 
 \subsection{Inferences}
